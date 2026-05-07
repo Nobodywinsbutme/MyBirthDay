@@ -43,6 +43,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let activeCard = null;
 
+    // Create expanded modal and overlay in DOM
+    const expandedOverlay = document.createElement('div');
+    expandedOverlay.classList.add('expanded-overlay');
+    document.body.appendChild(expandedOverlay);
+
+    const expandedModal = document.createElement('div');
+    expandedModal.classList.add('expanded-modal');
+    document.body.appendChild(expandedModal);
+
+    let currentExpandedCardName = '';
+
     shuffledData.forEach((item) => {
         const wrapper = document.createElement('div');
         wrapper.classList.add('float-wrapper');
@@ -65,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h3>${item.name}</h3>
             </div>
             <div class="card-back">
-                <button class="btn-close" aria-label="Đóng thiệp">🌸</button>
+                <button class="btn-back" aria-label="Back">🌸</button>
                 <div class="image-box">
                     <img src="${item.img}" alt="Ảnh sinh nhật">
                 </div>
@@ -82,20 +93,35 @@ document.addEventListener("DOMContentLoaded", () => {
         // Mở thiệp
         cardWrap.addEventListener('click', () => {
             if (wrapper.classList.contains('is-active')) return;
-            openCard(wrapper, cardWrap, inner);
+            openCard(wrapper, cardWrap, inner, item);
         });
 
-        // Nút đóng bên trong thiệp
-        const closeBtn = inner.querySelector('.btn-close');
-        closeBtn.addEventListener('click', (e) => {
+        // Nút back bên trong thiệp
+        const backBtn = inner.querySelector('.btn-back');
+        backBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             closeCard();
         });
+
+        // Click image to expand
+        const imageBox = inner.querySelector('.image-box');
+        imageBox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            expandContent(item, 'image');
+        });
+
+        // Click message to expand
+        const textContent = inner.querySelector('.text-content');
+        textContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+            expandContent(item, 'message');
+        });
     });
 
-    function openCard(wrapper, cardWrap, inner) {
+    function openCard(wrapper, cardWrap, inner, item) {
         if (activeCard) closeCard();
         activeCard = { wrapper, cardWrap, inner };
+        currentExpandedCardName = item.name;
 
         overlay.classList.add('show');
         document.body.classList.add('modal-open');
@@ -130,6 +156,77 @@ document.addEventListener("DOMContentLoaded", () => {
             activeCard = null;
         }, 800);
     }
+
+    function expandContent(item, type) {
+        currentExpandedCardName = item.name;
+        
+        let modalContent = `
+            <button class="close-expanded" aria-label="Close">✕</button>
+            <h2 style="color: #d1495b; margin-bottom: 20px; font-family: 'Dancing Script', cursive; font-size: 2rem;">
+                ${item.name}
+            </h2>
+        `;
+
+        if (type === 'image' && item.img) {
+            modalContent += `<img src="${item.img}" alt="Ảnh sinh nhật" class="expanded-image">`;
+        }
+
+        modalContent += `
+            <div class="expanded-message">${item.msg}</div>
+            <div class="secret-section">
+                <p style="color: #d1495b; margin-bottom: 15px; font-weight: 600;">✨ Hãy để lại lời chúc bí mật cho ${item.name}</p>
+                <input type="text" placeholder="Nhập lời chúc của bạn..." class="secret-input" maxlength="200">
+                <button class="secret-submit">✨ Submit</button>
+                <p class="secret-feedback" style="display: none; color: #28a745; margin-top: 10px;"></p>
+            </div>
+        `;
+
+        expandedModal.innerHTML = modalContent;
+
+        // Add event listeners
+        const closeBtn = expandedModal.querySelector('.close-expanded');
+        closeBtn.addEventListener('click', closeExpanded);
+
+        const submitBtn = expandedModal.querySelector('.secret-submit');
+        const secretInput = expandedModal.querySelector('.secret-input');
+        const feedback = expandedModal.querySelector('.secret-feedback');
+
+        submitBtn.addEventListener('click', () => {
+            const message = secretInput.value.trim();
+            if (message) {
+                feedback.textContent = `✓ Secret received! "${message}" has been saved for ${item.name}!`;
+                feedback.style.display = 'block';
+                submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                submitBtn.textContent = '✓ Sent!';
+                secretInput.value = '';
+                
+                setTimeout(() => {
+                    submitBtn.style.background = 'linear-gradient(135deg, #ff69b4 0%, #ff1493 100%)';
+                    submitBtn.textContent = '✨ Submit';
+                }, 2000);
+            }
+        });
+
+        secretInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        });
+
+        // Show expanded view
+        expandedOverlay.classList.add('show');
+        expandedModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeExpanded() {
+        expandedOverlay.classList.remove('show');
+        expandedModal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Close expanded on overlay click
+    expandedOverlay.addEventListener('click', closeExpanded);
 
     // Bấm vào nền đen mờ mới đóng thiệp
     overlay.addEventListener('click', closeCard);
