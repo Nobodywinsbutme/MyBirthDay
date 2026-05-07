@@ -1,23 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // --- CẤU HÌNH DỮ LIỆU THIỆP (BẠN SỬA Ở ĐÂY) ---
-    // Link ảnh bạn có thể lấy trên mạng hoặc up lên các trang như imgbb.com rồi dán vào
     const birthdayData = [
-        { name: "Lâm Vũ", img: "https://via.placeholder.com/300", msg: "Chúc Lâm Vũ tuổi mới đẹp trai, học giỏi và luôn vui vẻ nhé! 🎂" },
-        { name: "Thanh Ngọc", img: "https://via.placeholder.com/300", msg: "Chúc Thanh Ngọc luôn xinh đẹp và rạng rỡ như đóa hoa anh đào này! 🌸" },
-        { name: "Đăng Nguyên", img: "https://via.placeholder.com/300", msg: "Chúc Đăng Nguyên vạn sự như ý, sinh nhật thật ấm áp! 🎈" },
-        { name: "Ái Xiu", img: "https://via.placeholder.com/300", msg: "Chúc Ái Xiu luôn đáng yêu và gặp nhiều may mắn trong cuộc sống! ✨" },
-        { name: "Kỳ Thư", img: "https://via.placeholder.com/300", msg: "Mừng sinh nhật Kỳ Thư, chúc bạn luôn hạnh phúc bên gia đình! ❤️" },
-        { name: "Hoàng Trân", img: "https://via.placeholder.com/300", msg: "Chúc Hoàng Trân tuổi mới gặt hái được nhiều thành công mới! 🏆" },
-        { name: "Đức Anh", img: "https://via.placeholder.com/300", msg: "Sinh nhật vui vẻ nhé Đức Anh, quẩy nhiệt tình lên nào! 🎸" },
-        { name: "Tuấn Khanh", img: "https://via.placeholder.com/300", msg: "Chúc Tuấn Khanh luôn vững vàng và đạt được mọi ước mơ! 🌟" },
-        { name: "Em", img: "https://via.placeholder.com/300", msg: "Dành cho em những lời chúc ngọt ngào nhất thế gian này. Yêu em! 💖" },
-        { name: "Em", img: "https://via.placeholder.com/300", msg: "Chúc em một ngày tràn ngập quà tặng và những nụ cười! 🎁" },
-        { name: "Em", img: "https://via.placeholder.com/300", msg: "Dù thế nào đi nữa, hãy luôn tự tin và tỏa sáng em nhé! 💎" },
-        { name: "Em", img: "https://via.placeholder.com/300", msg: "Sinh nhật hạnh phúc nhé công chúa của anh! 👑" }
+        { name: "Lâm Vũ", img: "", msg: "Chúc Lâm Vũ tuổi mới đẹp trai, học giỏi và luôn vui vẻ nhé! 🎂" },
+        { name: "Thanh Ngọc", img: "", msg: "Chúc Thanh Ngọc luôn xinh đẹp và rạng rỡ như đóa hoa anh đào này! 🌸" },
+        { name: "Đăng Nguyên", img: "", msg: "Chúc Đăng Nguyên vạn sự như ý, sinh nhật thật ấm áp! 🎈" },
+        { name: "Ái Xiu", img: "", msg: "Chúc Ái Xiu luôn đáng yêu và gặp nhiều may mắn trong cuộc sống! ✨" },
+        { name: "Kỳ Thư", img: "", msg: "Mừng sinh nhật Kỳ Thư, chúc bạn luôn hạnh phúc bên gia đình! ❤️" },
+        { name: "Hoàng Trân", img: "", msg: "Chúc Hoàng Trân tuổi mới gặt hái được nhiều thành công mới! 🏆" },
+        { name: "Đức Anh", img: "", msg: "Sinh nhật vui vẻ nhé Đức Anh, quẩy nhiệt tình lên nào! 🎸" },
+        { name: "Tuấn Khanh", img: "", msg: "Chúc Tuấn Khanh luôn vững vàng và đạt được mọi ước mơ! 🌟" },
+        { name: "Yến Nhi", img: "", msg: "Chúc Yến Nhi luôn vui vẻ, hạnh phúc và tràn đầy năng lượng! 💐" },
+        { name: "Gia Hân", img: "", msg: "Chúc Gia Hân tuổi mới rực rỡ, tỏa sáng theo cách riêng! ✨" },
+        { name: "Minh Khang", img: "", msg: "Chúc Minh Khang thật nhiều sức khỏe và gặp nhiều may mắn! 🎁" },
+        { name: "Bảo Anh", img: "", msg: "Sinh nhật hạnh phúc nhé, luôn mỉm cười thật tươi! 👑" }
     ];
 
-    // Xáo trộn ngẫu nhiên dữ liệu
     const shuffledData = birthdayData.sort(() => Math.random() - 0.5);
 
     // 1. TẠO HOA ANH ĐÀO RƠI
@@ -29,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
         petal.style.width = `${size}px`;
         petal.style.height = `${size}px`;
         petal.style.left = `${Math.random() * 100}vw`;
-        petal.style.animationDuration = `${Math.random() * 5 + 5}s`;
-        petal.style.animationDelay = `${Math.random() * 5}s`;
+        petal.style.animationDuration = `${Math.random() * 6 + 6}s`;
+        petal.style.animationDelay = `${Math.random() * 6}s`;
         sakuraContainer.appendChild(petal);
     }
 
@@ -38,11 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const cardsContainer = document.getElementById('cards-container');
     const overlay = document.getElementById('overlay');
     const patterns = [
-        'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
-        'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)',
-        'linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)',
-        'radial-gradient(circle, #fff1eb 0%, #ace0f9 100%)',
-        'linear-gradient(to right, #ffecd2 0%, #fcb69f 100%)'
+        'linear-gradient(135deg, #ffd1dc 0%, #f9a8d4 100%)',
+        'linear-gradient(120deg, #fbcfe8 0%, #f9a8d4 100%)',
+        'radial-gradient(circle, #fff1f7 0%, #fbcfe8 100%)',
+        'linear-gradient(to right, #ffe4ec 0%, #f8b4d9 100%)',
+        'linear-gradient(135deg, #f7c5dd 0%, #f3a6c8 100%)'
     ];
 
     let activeCard = null;
@@ -51,6 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const wrapper = document.createElement('div');
         wrapper.classList.add('float-wrapper');
         wrapper.style.animationDelay = `${Math.random() * 2}s`;
+        wrapper.style.setProperty('--float-x', `${Math.random() * 18 - 9}px`);
+        wrapper.style.setProperty('--float-y', `${Math.random() * -18 - 6}px`);
+        wrapper.style.setProperty('--float-rot', `${Math.random() * 6 - 3}deg`);
+        wrapper.style.setProperty('--float-duration', `${Math.random() * 2 + 4}s`);
 
         const cardWrap = document.createElement('div');
         cardWrap.classList.add('card-wrapper');
@@ -65,9 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h3>${item.name}</h3>
             </div>
             <div class="card-back">
-                <button class="btn-close">🌸</button>
+                <button class="btn-close" aria-label="Đóng thiệp">🌸</button>
                 <div class="image-box">
-                    <img src="${item.img}" alt="Birthday Image">
+                    <img src="${item.img}" alt="Ảnh sinh nhật">
                 </div>
                 <div class="text-content">
                     <p>${item.msg}</p>
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cardsContainer.appendChild(wrapper);
 
         // Mở thiệp
-        cardWrap.addEventListener('click', (e) => {
+        cardWrap.addEventListener('click', () => {
             if (wrapper.classList.contains('is-active')) return;
             openCard(wrapper, cardWrap, inner);
         });
@@ -98,14 +98,16 @@ document.addEventListener("DOMContentLoaded", () => {
         activeCard = { wrapper, cardWrap, inner };
 
         overlay.classList.add('show');
+        document.body.classList.add('modal-open');
         document.querySelectorAll('.float-wrapper').forEach(w => w.style.animationPlayState = 'paused');
         wrapper.classList.add('is-active');
+        cardWrap.classList.add('is-open');
 
         const rect = wrapper.getBoundingClientRect();
         const moveX = (window.innerWidth / 2) - (rect.left + rect.width / 2);
         const moveY = (window.innerHeight / 2) - (rect.top + rect.height / 2);
-        
-        const targetW = window.innerWidth < 600 ? window.innerWidth * 0.9 : 450;
+
+        const targetW = window.innerWidth < 600 ? window.innerWidth * 0.9 : 520;
         const scale = targetW / rect.width;
 
         cardWrap.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scale})`;
@@ -117,8 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const { wrapper, cardWrap, inner } = activeCard;
 
         overlay.classList.remove('show');
+        document.body.classList.remove('modal-open');
         inner.classList.remove('opened-flip');
         cardWrap.style.transform = `translate(0, 0) scale(1)`;
+        cardWrap.classList.remove('is-open');
 
         setTimeout(() => {
             wrapper.classList.remove('is-active');
