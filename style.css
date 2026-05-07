@@ -1,10 +1,18 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+    color-scheme: light;
+}
+
 body {
     font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    background: radial-gradient(circle at top, #ffe6f1 0%, #ffc3d9 45%, #f8b5d0 100%);
     min-height: 100vh;
     overflow-x: hidden;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 /* Hiệu ứng Sakura */
@@ -14,13 +22,13 @@ body {
 }
 .sakura-petal {
     position: fixed; background: #ffb7c5; border-radius: 15px 0 15px 0;
-    opacity: 0.8; pointer-events: none; z-index: 0;
+    opacity: 0.85; pointer-events: none; z-index: 0;
     animation: fall linear infinite;
 }
 @keyframes fall {
     0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
-    20% { opacity: 0.8; }
-    100% { transform: translateY(110vh) translateX(50px) rotate(360deg); opacity: 0; }
+    20% { opacity: 0.85; }
+    100% { transform: translateY(110vh) translateX(60px) rotate(360deg); opacity: 0; }
 }
 
 .header {
@@ -29,36 +37,48 @@ body {
 }
 .header h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; margin-bottom: 10px; }
 
+.main {
+    position: relative;
+    z-index: 10;
+}
+
 /* Nền mờ Overlay */
 #overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px); opacity: 0; visibility: hidden;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px); opacity: 0; visibility: hidden;
     transition: all 0.5s ease; z-index: 900;
     cursor: zoom-out; /* Hiện icon kính lúp nhỏ khi rà vào nền */
 }
 #overlay.show { opacity: 1; visibility: visible; }
 
 .cards-container {
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 28px;
     padding: 30px; max-width: 1200px; margin: 0 auto;
     position: relative; z-index: 10;
 }
 
 .float-wrapper {
     position: relative; width: 180px; height: 260px;
-    perspective: 1500px; animation: float 4s ease-in-out infinite; z-index: 1;
+    perspective: 1500px;
+    animation: float var(--float-duration, 5s) ease-in-out infinite;
+    z-index: 1;
 }
 .float-wrapper.is-active { z-index: 1000; }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(var(--float-x, 0px), var(--float-y, -18px)) rotate(var(--float-rot, 2deg)); }
 }
 
 .card-wrapper {
     width: 100%; height: 100%; transform-origin: center center; cursor: pointer;
-    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+}
+
+.card-wrapper:not(.is-open):hover {
+    transform: scale(1.06);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
 }
 
 .card-inner {
@@ -69,15 +89,15 @@ body {
 
 .card-front, .card-back {
     position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
-    border-radius: 8px; display: flex; flex-direction: column;
-    align-items: center; box-shadow: 4px 4px 15px rgba(0,0,0,0.25);
+    border-radius: 10px; display: flex; flex-direction: column;
+    align-items: center; box-shadow: 4px 4px 18px rgba(0,0,0,0.25);
 }
 
-.card-front { border: 2px solid #deb887; justify-content: center; }
+.card-front { border: 2px solid #deb887; justify-content: center; padding: 18px; }
 .card-front h3 {
     font-family: 'Dancing Script', cursive; color: #5c3a21;
-    font-size: 2rem; padding: 10px; background: rgba(255, 255, 255, 0.7);
-    border-radius: 5px; border: 1px dashed #5c3a21;
+    font-size: 2rem; padding: 12px 16px; background: rgba(255, 255, 255, 0.75);
+    border-radius: 8px; border: 1px dashed #5c3a21;
 }
 
 /* Mặt sau thiệp */
@@ -94,17 +114,37 @@ body {
     width: 100%;
     aspect-ratio: 1 / 1; /* Giữ ảnh luôn vuông */
     border: 2px solid #ffb7c5;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     margin-bottom: 15px;
     background: #fff0f5;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.image-box::before {
+    content: "Chèn ảnh ở đây";
+    font-size: 0.9rem;
+    color: #d1495b;
+    opacity: 0.7;
+    position: absolute;
 }
 .image-box img {
     width: 100%; height: 100%; object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.image-box img:not([src]),
+.image-box img[src=""] {
+    opacity: 0;
+}
+.image-box img[src]:not([src=""]) {
+    opacity: 1;
 }
 
 .text-content {
-    width: 100%; font-size: 0.9rem; color: #d1495b;
+    width: 100%; font-size: 0.95rem; color: #d1495b;
     line-height: 1.5; text-align: center;
     overflow-y: auto; /* Nếu lời chúc quá dài sẽ có thanh cuộn */
 }
@@ -112,13 +152,17 @@ body {
 .btn-close {
     position: absolute; top: 10px; right: 10px;
     background: #fff; border: 2px solid #ffb7c5; border-radius: 50%;
-    font-size: 1.2rem; cursor: pointer; width: 35px; height: 35px;
+    font-size: 1.2rem; cursor: pointer; width: 36px; height: 36px;
     display: none; align-items: center; justify-content: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     z-index: 10;
 }
 .is-active .btn-close { display: flex; }
 .btn-close:hover { background: #fff0f5; transform: scale(1.1); }
+
+@media (max-width: 900px) {
+    .cards-container { gap: 22px; }
+}
 
 @media (max-width: 600px) {
     .float-wrapper { width: 140px; height: 200px; }
