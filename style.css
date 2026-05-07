@@ -106,13 +106,13 @@ body.modal-open {
     padding: 40px 20px 20px 20px;
     box-sizing: border-box; display: flex; flex-direction: column;
     justify-content: flex-start;
-    cursor: default; /* Không hiện bàn tay khi rà vào trong thiệp */
+    cursor: default;
 }
 
 /* Khung chứa ảnh thật */
 .image-box {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Giữ ảnh luôn vuông */
+    aspect-ratio: 1 / 1;
     border: 2px solid #ffb7c5;
     border-radius: 10px;
     overflow: hidden;
@@ -122,13 +122,20 @@ body.modal-open {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.image-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 183, 197, 0.5);
 }
 .image-box::before {
-    content: "Chèn ảnh ở đây";
+    content: "Click to expand";
     font-size: 0.9rem;
     color: #d1495b;
     opacity: 0.7;
     position: absolute;
+    z-index: 2;
 }
 .image-box img {
     width: 100%; height: 100%; object-fit: cover;
@@ -146,19 +153,101 @@ body.modal-open {
 .text-content {
     width: 100%; font-size: 0.95rem; color: #d1495b;
     line-height: 1.5; text-align: center;
-    overflow-y: auto; /* Nếu lời chúc quá dài sẽ có thanh cuộn */
+    overflow-y: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 8px;
+}
+.text-content:hover {
+    transform: scale(1.05);
+    background: rgba(255, 183, 197, 0.1);
 }
 
-.btn-close {
+.btn-back {
     position: absolute; top: 10px; right: 10px;
     background: #fff; border: 2px solid #ffb7c5; border-radius: 50%;
     font-size: 1.2rem; cursor: pointer; width: 36px; height: 36px;
     display: none; align-items: center; justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     z-index: 10;
+    transition: all 0.3s ease;
 }
-.is-active .btn-close { display: flex; }
-.btn-close:hover { background: #fff0f5; transform: scale(1.1); }
+.is-active .btn-back { display: flex; }
+.btn-back:hover { background: #fff0f5; transform: scale(1.1); }
+
+/* Expanded view modal */
+.expanded-modal {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: #fff; border-radius: 15px;
+    padding: 30px; box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+    z-index: 2000; max-width: 90vw; max-height: 90vh;
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow-y: auto;
+    text-align: center;
+}
+.expanded-modal.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.expanded-modal .expanded-image {
+    width: 100%; max-width: 400px; height: auto;
+    border-radius: 10px; margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.expanded-modal .expanded-message {
+    font-size: 1.1rem; color: #d1495b;
+    line-height: 1.8; margin-bottom: 20px;
+    font-family: 'Dancing Script', cursive;
+}
+
+.secret-section {
+    background: #fff0f5; padding: 20px; border-radius: 10px;
+    border: 2px dashed #ffb7c5; margin-top: 20px;
+}
+
+.secret-section input {
+    width: 100%; padding: 10px; border: 2px solid #ffb7c5;
+    border-radius: 8px; font-size: 1rem;
+    margin-bottom: 10px; box-sizing: border-box;
+}
+
+.secret-section button {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    color: #fff; border: none; padding: 10px 20px;
+    border-radius: 8px; font-size: 1rem; cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.secret-section button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+}
+
+.close-expanded {
+    position: absolute; top: 15px; right: 15px;
+    background: #ffb7c5; border: none; border-radius: 50%;
+    width: 36px; height: 36px; font-size: 1.5rem; cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-expanded:hover {
+    background: #ff69b4;
+    transform: scale(1.1);
+}
+
+/* Overlay for expanded modal */
+.expanded-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); z-index: 1999;
+    opacity: 0; visibility: hidden;
+    transition: all 0.3s ease;
+}
+.expanded-overlay.show {
+    opacity: 1; visibility: visible;
+}
 
 @media (max-width: 900px) {
     .cards-container { gap: 22px; }
@@ -167,4 +256,7 @@ body.modal-open {
 @media (max-width: 600px) {
     .float-wrapper { width: 140px; height: 200px; }
     .header h1 { font-size: 2.5rem; }
+    .expanded-modal {
+        max-width: 95vw; padding: 20px;
+    }
 }
