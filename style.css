@@ -46,9 +46,9 @@ body.modal-open {
 #overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px); opacity: 0; visibility: hidden;
+    opacity: 0; visibility: hidden;
     transition: all 0.5s ease; z-index: 900;
-    cursor: zoom-out; /* Hiện icon kính lúp nhỏ khi rà vào nền */
+    cursor: pointer;
 }
 #overlay.show { opacity: 1; visibility: visible; }
 
