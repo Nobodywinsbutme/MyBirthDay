@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday 🌸</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div id="sakura-container"></div>
+  <div id="sakura-container" aria-hidden="true"></div>
+  <div id="overlay" aria-hidden="true"></div>
 
-    <div id="overlay"></div>
+  <header class="header">
+    <h1>Happy Birthday! 🌸</h1>
+    <p>Hãy chọn một lá thiệp để khám phá nhé</p>
+  </header>
 
-    <header class="header">
-        <h1>Happy Birthday! 🌸</h1>
-        <p>Hãy chọn một lá thiệp để khám phá nhé</p>
-    </header>
-
+  <main class="main">
     <div id="cards-container" class="cards-container"></div>
+  </main>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
